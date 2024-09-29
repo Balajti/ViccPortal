@@ -20,7 +20,6 @@ const JokeCard: React.FC<JokeCardProps> = ({ joke, onLike, onComment, commentNam
   const [showPunchline, setShowPunchline] = useState<boolean>(false);
   const [showComments, setshowComments] = useState<boolean>(false);
   const [comment, setComment] = useState<string>('');
-  let liked = joke.likes.likedByUsers.includes(joke.userId);
 
 
 
@@ -56,15 +55,12 @@ const JokeCard: React.FC<JokeCardProps> = ({ joke, onLike, onComment, commentNam
             variant="ghost" 
             onClick={() => {
               onLike(joke.userId, joke.id);
-              liked = !liked;
             }} 
             className="flex items-center"
           >
             <ThumbsUp 
               size={20} 
-              className="mr-2" 
-              fill={liked ? 'black' : 'none'} 
-              stroke={liked ? 'black' : 'currentColor'}
+              className="mr-2"
             />
             {joke.likes.count}
           </Button>

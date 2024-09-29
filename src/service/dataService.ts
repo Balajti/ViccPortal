@@ -82,7 +82,7 @@ export async function addFriend(currentUserId: number, friendUserId: number): Pr
       currentUser.friends.push(friendUserId);
       await saveData(data);
     }
-  getAllData();
+    await getAllData();
 }
 
   export async function removeFriend(currentUserId: number, friendUserId: number): Promise<void> {

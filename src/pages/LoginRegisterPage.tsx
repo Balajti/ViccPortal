@@ -3,7 +3,6 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import UserCard from '@/components/userCard';
 import { UserDTO } from '@/types/UserDTO';
 
 interface LoginRegisterPageProps {
@@ -113,7 +112,6 @@ const LoginRegisterPage: React.FC<LoginRegisterPageProps> = ({ onLogin, onRegist
           </Button>
         </CardFooter>
       </Card>
-      <UserCard />
     </div>
   );
 };

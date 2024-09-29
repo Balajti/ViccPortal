@@ -38,7 +38,9 @@ const UserProfile: React.FC<UserProfileProps> = ({ user, currentUser, onAddFrien
             setShowAllJokes(isItYourProfiles);
         }, [isItYourProfiles]);
 
-    const displayedJokes = isFriend && showAllJokes
+    
+
+    const displayedJokes = isFriend || isItYourProfiles && showAllJokes
         ? currentUser.posts
         : currentUser.posts.sort((a, b) => b.likes.count - a.likes.count).slice(0, 5);
 
