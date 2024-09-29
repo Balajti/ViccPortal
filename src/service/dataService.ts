@@ -32,15 +32,13 @@ export async function handleLike(userId: number, jokeId: number, currentUserId: 
   if (!alreadyLiked) {
     joke.likes.count += 1;
     joke.likes.likedByUsers.push(currentUserId);
-    if (!joke.likes.likedByUsers.includes(userId)) {
-      joke.likes.likedByUsers.push(userId);
-    }
   } else {
     joke.likes.count -= 1;
     joke.likes.likedByUsers = joke.likes.likedByUsers.filter(id => id !== currentUserId);
   }
   
   await saveData(data);
+  await getAllData();
 }
 
 export async function handleComment(userId: number, jokeId: number, commentText: string, currentUserId: number): Promise<void> {
@@ -55,6 +53,7 @@ export async function handleComment(userId: number, jokeId: number, commentText:
   };
   joke.comments.push(newComment);
   await saveData(data);
+  await getAllData();
 }
 
 export async function handlePostJoke(userId: number, setup: string, punchline: string): Promise<void> {
@@ -73,6 +72,7 @@ export async function handlePostJoke(userId: number, setup: string, punchline: s
   };
   user.posts.push(newJoke);
   await saveData(data);
+  await getAllData();
 }
 
 export async function addFriend(currentUserId: number, friendUserId: number): Promise<void> {
@@ -82,7 +82,8 @@ export async function addFriend(currentUserId: number, friendUserId: number): Pr
       currentUser.friends.push(friendUserId);
       await saveData(data);
     }
-  }
+  getAllData();
+}
 
   export async function removeFriend(currentUserId: number, friendUserId: number): Promise<void> {
     const data = await fetchData();
@@ -91,7 +92,8 @@ export async function addFriend(currentUserId: number, friendUserId: number): Pr
       currentUser.friends = currentUser.friends.filter(id => id !== friendUserId);
       await saveData(data);
     }
-  }
+    await getAllData();
+}
   export async function registerUser(newUser: UserDTO): Promise<void> {
     const data = await fetchData();
 
@@ -106,7 +108,8 @@ export async function addFriend(currentUserId: number, friendUserId: number): Pr
     
     data.push(newUser);
     await saveData(data);
-  }
+    await getAllData();
+}
 
 export async function getAllData(): Promise<UserDTO[]> {
   return await fetchData();

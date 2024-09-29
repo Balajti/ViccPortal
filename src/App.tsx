@@ -104,16 +104,18 @@ const App = () => {
   const [data, setData] = useState<UserDTO[]>([]);
   const [liked,  setLiked] = useState<boolean>(false);
   const [filteredUsers, setFilteredUsers] = useState<UserDTO[]>([]);
+  const [refresh, setRefresh] = useState<boolean>(false);
 
   useEffect(() => {
-    const fetchData = async () => {
-      const datas = await getAllData();
-      setData(datas);
-      if (!currentUser) setFilteredUsers(datas);
-    };
+  const fetchData = async () => {
+    console.log('fetching data');
+    const datas = await getAllData();
+    setData(datas);
+    setRefresh(false);
+  };
   
     fetchData();
-  }, [currentUser]);
+  }, [refresh]);
 
   useEffect(() => {
     if (Array.isArray(data)) {
@@ -142,9 +144,12 @@ const App = () => {
     try {
       handleLike(userId, jokeId, currentUser.id);
       setData(await getAllData());
-    } catch (error) {
+      setRefresh(true);
+  } catch (error) {
       console.error('Error liking joke:', error);
     }
+    setRefresh(false);
+    await getAllData();
   };
 
   const handleCommentSubmit = async (userId: number, jokeId: number, comment: string) => {
@@ -152,9 +157,12 @@ const App = () => {
       const currentUserId = currentUser.id;
       handleComment(userId, jokeId, comment, currentUserId);
       setData(await getAllData());
+      setRefresh(true);
     } catch (error) {
       console.error('Error posting comment:', error);
     }
+    setRefresh(false);
+    await getAllData();
   };
 
   const handlePostJokeSubmit = async (joke: {setup: string; punchline: string }) => {
@@ -162,11 +170,14 @@ const App = () => {
     try {
       handlePostJoke(userId, joke.setup, joke.punchline);
       setData(await getAllData());
+      setRefresh(true);
       setIsPostJokeModalOpen(false);
     } catch (error) {
       console.error('Error posting joke:', error);
 
     }
+    setRefresh(false);
+    await getAllData();
   };
 
   const handleAddFriend = async (userId: number) => {
@@ -175,9 +186,12 @@ const App = () => {
       setData(await getAllData());
       console.log('added: ',data)
       console.log('Friend added:', userId);
+      setRefresh(true);
     } catch (error) {
       console.error('Error adding friend:', error);
     }
+    setRefresh(false);
+    await getAllData();
   };
 
   const handleRemoveFriend = async (userId: number) => {
@@ -186,9 +200,12 @@ const App = () => {
       setData(await getAllData());
       console.log('removed: ',data)
       console.log('Friend removed:', userId);
+      setRefresh(true);
     } catch (error) {
       console.error('Error removing friend:', error);
     }
+    setRefresh(false);
+    await getAllData();
   };
 
   const handleLogin = (user: { email: string; password: string }) => {
